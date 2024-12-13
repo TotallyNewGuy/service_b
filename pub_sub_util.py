@@ -43,7 +43,6 @@ def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         # filter out json string
         if json_str.startswith("{"):
             json_obj = json.loads(json_str)
-            print(json_obj)
     message.ack()
 
 
