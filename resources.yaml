@@ -6,7 +6,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: data-center-service
+    commonLabel: data-center-service
   ports:
   - name: http
     port: 80
@@ -25,17 +25,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service-b
-  labels:
-    app: data-center-service
+  # labels:
+  #   app: data-center-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: service-b
+      commonLabel: data-center-service
   template:
     metadata:
       labels:
         app: service-b
+        commonLabel: data-center-service
     spec:
       containers:
       - name: service-b-container
