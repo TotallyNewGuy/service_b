@@ -55,6 +55,11 @@ spec:
               secretKeyRef:
                 name: data-center-project-secret
                 key: TRAIN_TRACKER_KEY
+          - name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: data-center-project-secret
+                key: DB_URL
           - name: PORT
             value: "8081"
           - name: DEBUG

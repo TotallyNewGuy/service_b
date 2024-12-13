@@ -9,7 +9,7 @@ def init_db():
     global async_engine
     if async_engine is None:
         async_engine = create_async_engine(
-        os.getenv("DB_URL"), pool_size=10, max_overflow=0, pool_pre_ping=False, pool_recycle=1800
+            os.getenv("DB_URL"), pool_size=10, max_overflow=0, pool_pre_ping=False, pool_recycle=1800
         )
 
 
