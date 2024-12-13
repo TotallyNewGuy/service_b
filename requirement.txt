@@ -1,0 +1,10 @@
+quart
+quart_cors
+python-dotenv
+google-cloud-pubsub
+Werkzeug
+sqlalchemy
+pandas
+asyncpg
+psycopg2-binary
+sqlacodegen-v2
