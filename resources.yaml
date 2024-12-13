@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: services-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: data-center-service
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: service-a-port
+    port: 8080
+    targetPort: 8080
+  - name: service-b-port
+    port: 8081
+    targetPort: 8081
+  - name: service-c-port
+    port: 8082
+    targetPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b
+  labels:
+    app: data-center-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-b
+  template:
+    metadata:
+      labels:
+        app: service-b
+    spec:
+      containers:
+      - name: service-b-container
+        image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/data-center-final-project/service-b:latest
+        ports:
+        - containerPort: 8081
+        env:
+          - name: GCP_CRED
+            valueFrom:
+              secretKeyRef:
+                name: data-center-project-secret
+                key: GCP_CRED
+          - name: TRAIN_TRACKER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: data-center-project-secret
+                key: TRAIN_TRACKER_KEY
+          - name: PORT
+            value: "8081"
+          - name: DEBUG
+            value: "FALSE"
+          - name: TOPIC_ID
+            value: "bus-data"
+          - name: SUB_ID
+            value: "bus-data-sub"
+          - name: PROJECT_ID
+            value: "civic-automata-435117-h3"

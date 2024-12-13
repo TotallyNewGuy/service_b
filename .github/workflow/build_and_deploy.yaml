@@ -1,0 +1,44 @@
+name: Deploy to Artifact repo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  depoly:
+    name: Build Images and deploy to GKE
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        id: "checkout"
+        uses: actions/checkout@v3
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_CRED_STR }}'
+
+      - name: Install gcloud-cli
+        id: "install_gcloud-cli"
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
+          project_id: ${{ secrets.PROJECT_ID }}
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: build and push the docker image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/data-center-final-project/service-b:latest .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/data-center-final-project/service-b:latest
+
+      - name: deploy to GKE
+        env:
+          GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
+        run: |
+          gcloud container clusters get-credentials data-center-project --region us-central1
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
+          kubectl apply -f resources.yaml
+  
