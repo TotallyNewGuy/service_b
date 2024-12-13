@@ -5,6 +5,7 @@ from sqlalchemy import BigInteger, Integer, PrimaryKeyConstraint, String
 Base = declarative_base()
 
 
+
 class CsvData(Base):
     __tablename__ = 'csv_data'
     __table_args__ = (
