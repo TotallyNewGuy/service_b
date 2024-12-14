@@ -11,9 +11,7 @@ from pub_sub_util import get_streaming_pull, get_subscriber, init_pub_sub_client
 
 def create_app():
     load_dotenv()
-    # The main app
     app = Quart(__name__)
-    # enable CORS
     app = cors(app, allow_origin="*")
     app.register_blueprint(csv_blueprint)
     return app
