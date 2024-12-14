@@ -2,6 +2,8 @@ import os, json
 from google.cloud import pubsub_v1
 from google.oauth2 import service_account
 
+from db_service import update_arrt_headway
+
 
 publisher, subscriber = None, None
 
@@ -43,6 +45,8 @@ def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         # filter out json string
         if json_str.startswith("{"):
             json_obj = json.loads(json_str)
+            res_list = json_obj["respon_json_raw"]
+            update_arrt_headway(res_list)
     message.ack()
 
 

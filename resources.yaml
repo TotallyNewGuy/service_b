@@ -60,6 +60,11 @@ spec:
               secretKeyRef:
                 name: data-center-project-secret
                 key: DB_URL
+          - name: SYNC_URL
+            valueFrom:
+              secretKeyRef:
+                name: data-center-project-secret
+                key: SYNC_URL
           - name: PORT
             value: "8081"
           - name: DEBUG
