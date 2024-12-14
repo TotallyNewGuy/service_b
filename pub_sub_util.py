@@ -45,6 +45,7 @@ def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         # filter out json string
         if json_str.startswith("{"):
             json_obj = json.loads(json_str)
+            print(f"receive {json_obj} forom topic {os.getenv('TOPIC_ID')}")
             res_list = json_obj["respon_json_raw"]
             update_arrt_headway(res_list)
     message.ack()

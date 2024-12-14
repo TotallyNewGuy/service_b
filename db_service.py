@@ -110,7 +110,6 @@ def update_arrt_headway(res_list):
                 if len(df) != 0:
                     stmt = update(models.CsvData).where(models.CsvData.id == int(df["id"][0])).values(arrt_time=arrt)
                     curr_session.execute(stmt)
-                    print(int(df["id"][0]))
 
         with curr_session.begin():
             print(f"find_prev_arrt_query")
@@ -121,10 +120,8 @@ def update_arrt_headway(res_list):
                 df = pd.read_sql(find_prev_arrt_query, get_db_engine(), params={'runid': runid, 'timepointid': timepointid, 'arrt': arrt})
                 if len(df) != 0:
                     time_diff = arrt - int(df["arrt_time"][0])
-                    print(type(time_diff))
                     stmt = update(models.CsvData).where(models.CsvData.id == int(df["id"][0])).values(arrt_headway=time_diff)
                     curr_session.execute(stmt)
-                    print(int(df["id"][0]))
     finally:
         curr_session.close()
     
