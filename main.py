@@ -43,6 +43,7 @@ async def start_background_task():
 
 @app.route("/")
 async def hello_world():
+    
     return "<p>Hello World from Service B!</p>"
 
 
